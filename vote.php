@@ -50,6 +50,7 @@ $link->query("UPDATE `currentPlaylist`
 <?php
 $query = "SELECT `voteTotal`,`name` , `artist`, `id`
 FROM `currentPlaylist`
+WHERE `playback_timestamp` is NULL
 ORDER BY  `voteTotal` DESC";
 
 $results = mysqli_query($link, $query);

@@ -1,7 +1,14 @@
 <?php
 //Loop forever for now... This is our payback engine. Eventually add a break so the user can quit ;-)
+
 while(1)
 {
+
+  if(connection_status() != CONNECTION_NORMAL)
+  {
+    break; //for now, kill our run loop if the page is closed. this will wait until the current song finishes
+  }
+  
   $user = 'root';
   $password = 'root';
   $db = 'testapp';
@@ -40,12 +47,16 @@ while(1)
 
   //playback song here
 
-  $song_path = escapeshellarg($song_path);
+  if ($song_path != "")
+  {
+    $song_path = escapeshellarg($song_path);
 
-  echo "Playing " . $song_path;
-  echo exec('afplay ' . $song_path);
+    echo "<br>Playing " . $song_path;
+    echo exec('afplay ' . $song_path);
+    //echo exec('afplay -t 20 ' . $song_path);
+  }
 
   $link->close();
-
 }
+
 ?>

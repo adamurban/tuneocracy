@@ -13,7 +13,7 @@
         $(".votebutton").click(function(){
           $.get("vote.php", {vote: event.target.id})
             .done(function( data ) {
-              $("#songTable")
+              $("#unplayedSongTable")
               .empty()
               .append(data)
               .bindimages();
@@ -58,15 +58,62 @@ $success = mysqli_real_connect(
    $port
 );
 
+$query = "SELECT `voteTotal`,`name` , `artist`, `id`,`playback_timestamp`
+FROM `currentPlaylist`
+WHERE `playback_timestamp` is not NULL
+ORDER BY  `playback_timestamp` ASC";
+
+$results = mysqli_query($link, $query);
+
+?>
+Previous Songs:
+<table id="playedSongTable">
+<thead>
+<tr>
+<th>Vote Total</th><th>Title</th><th>Artist</th><th>Playback Time</th>
+</tr>
+</thead>
+<tbody>
+<?php
+$last_song_num = $results->num_rows;
+$i = 1;
+
+while($row = mysqli_fetch_array($results))
+{
+  echo "<tr><td>"; 
+  if ($i == $last_song_num)
+  {
+    echo "Now Playing";
+  }  
+  else
+  {
+   echo $row['voteTotal'];
+  }
+  echo "</td><td>";   
+  echo $row['name'];
+  echo "</td><td>";    
+  echo $row['artist'];
+  echo "</td><td>";
+  echo $row['playback_timestamp'];
+  echo "</td></tr>\n"; 
+  $i++; 
+}
+?>
+<tbody>
+</table>
+<br>
+Vote on Upcoming Songs:
+<?php
 $query = "SELECT `voteTotal`,`name` , `artist`, `id`
 FROM `currentPlaylist`
+WHERE `playback_timestamp` is NULL
 ORDER BY  `voteTotal` DESC";
 
 $results = mysqli_query($link, $query);
 $song_count = $results->num_rows;
 ?>
 
-<table id="songTable">
+<table id="unplayedSongTable">
 <thead>
 <tr>
 <th>Vote Total</th><th>Title</th><th>Artist</th><th>id</th>
