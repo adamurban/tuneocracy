@@ -43,7 +43,7 @@ $link->query("UPDATE `currentPlaylist`
 ?>
 <thead>
 <tr>
-<th>Vote Total</th><th>Title</th><th>Artist</th><th>id</th>
+<th>Vote Total</th><th>Title</th><th>Artist</th>
 </tr>
 </thead>
 <tbody>
@@ -65,8 +65,6 @@ while($row = mysqli_fetch_array($results))
   echo $row['name'];
   echo "</td><td>";    
   echo $row['artist'];
-  echo "</td><td>";
-  echo $persistent_id;
   echo "</td></tr>\n";
   
   //reorder the actual iTunes playlist

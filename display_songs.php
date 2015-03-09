@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <title>TestApp</title>
 
+<meta http-equiv="refresh" content="2; URL=display_songs.php">
+
 <script src="jquery-2.1.3.min.js" type="text/javascript"></script>
 
 <script>
@@ -34,6 +36,18 @@ $(document).ready(function(){
 .center {
     text-align: center;
 }
+tr:nth-child(even) {background: #CCC}
+tr:nth-child(odd) {background: #FFF}
+table {
+    border-collapse: collapse;
+    width: 80%;
+}
+
+table, th, td {
+    border: 1px solid black;
+    min-width:100px;
+}
+
 </style>
 
 </head>
@@ -116,7 +130,7 @@ $song_count = $results->num_rows;
 <table id="unplayedSongTable">
 <thead>
 <tr>
-<th>Vote Total</th><th>Title</th><th>Artist</th><th>id</th>
+<th>Vote Total</th><th>Title</th><th>Artist</th>
 </tr>
 </thead>
 <tbody>
@@ -132,8 +146,6 @@ while($row = mysqli_fetch_array($results))
   echo $row['name'];
   echo "</td><td>";    
   echo $row['artist'];
-  echo "</td><td>";
-  echo $row['id'];
   echo "</td></tr>\n";  
 }
 $link->close();
