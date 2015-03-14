@@ -62,7 +62,7 @@ for ($i = 0; $i < $totalSongs; $i++)
   $path_value = mysqli_real_escape_string($link, $pathArray[$i]);
 
   $link->query("REPLACE INTO `currentPlaylist` (
-    id,
+    song_id,
     name,
     artist,
     filepath

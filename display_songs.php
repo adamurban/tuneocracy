@@ -1,8 +1,19 @@
+<?php
+$sessionid = htmlspecialchars($_COOKIE['tuneocracy_id']);
+
+if (!$sessionid) {
+  //If the user doesn't have a cookie yet, make one for them
+  $randomstring = "tuneocracy" . rand() . time();
+  $sessionid = md5('$randomstring'); //sessionid here is just a hash of the username + random number + time and a random salt
+  setcookie("tuneocracy_id", $sessionid);
+}
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>TestApp</title>
+<title>Tuneocracy</title>
 
 <meta http-equiv="refresh" content="2; URL=display_songs.php">
 
@@ -72,9 +83,11 @@ $success = mysqli_real_connect(
    $port
 );
 
-$query = "SELECT `voteTotal`,`name` , `artist`, `id`,`playback_timestamp`
+$query = "SELECT sum(COALESCE(votes.`vote_value`,0)) as total_votes, currentPlaylist.`song_id`, currentPlaylist.`name`, currentPlaylist.`artist`, currentPlaylist.`playback_timestamp`
 FROM `currentPlaylist`
+LEFT JOIN `votes` on currentPlaylist.`song_id` = votes.`song_id`
 WHERE `playback_timestamp` is not NULL
+GROUP BY `song_id`
 ORDER BY  `playback_timestamp` ASC";
 
 $results = mysqli_query($link, $query);
@@ -101,7 +114,7 @@ while($row = mysqli_fetch_array($results))
   }  
   else
   {
-   echo $row['voteTotal'];
+   echo $row['total_votes'];
   }
   echo "</td><td>";   
   echo $row['name'];
@@ -118,10 +131,12 @@ while($row = mysqli_fetch_array($results))
 <br>
 Vote on Upcoming Songs:
 <?php
-$query = "SELECT `voteTotal`,`name` , `artist`, `id`
+$query = "SELECT sum(COALESCE(votes.`vote_value`,0)) as total_votes, currentPlaylist.`song_id`, currentPlaylist.`name`, currentPlaylist.`artist`, currentPlaylist.`playback_timestamp`
 FROM `currentPlaylist`
+LEFT JOIN `votes` on currentPlaylist.`song_id` = votes.`song_id`
 WHERE `playback_timestamp` is NULL
-ORDER BY  `voteTotal` DESC";
+GROUP BY `song_id`
+ORDER BY  `total_votes` DESC";
 
 $results = mysqli_query($link, $query);
 $song_count = $results->num_rows;
@@ -138,10 +153,10 @@ $song_count = $results->num_rows;
 //display all data from db in table form
 while($row = mysqli_fetch_array($results))
 {
-  $upvote_id = "upvote_" . $row['id'];
-  $downvote_id = "downvote_" . $row['id'];
+  $upvote_id = "upvote_" . $row['song_id'];
+  $downvote_id = "downvote_" . $row['song_id'];
   echo "<tr><td><div class='center'><img src='images/upvote_sm.png' alt='upvote' height='24' width='24' class='votebutton' id='$upvote_id'><br>"; 
-  echo $row['voteTotal'];
+  echo $row['total_votes'];
   echo "<br><img src='images/downvote_sm.png' alt='downvote' height='24' width='24' class='votebutton' id='$downvote_id'></div></td><td>";   
   echo $row['name'];
   echo "</td><td>";    
