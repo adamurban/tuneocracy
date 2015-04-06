@@ -1,76 +1,4 @@
 <?php
-$sessionid = htmlspecialchars($_COOKIE['tuneocracy_id']);
-
-if (!$sessionid) {
-  //If the user doesn't have a cookie yet, make one for them
-  $randomstring = rand() . "tuneocracy" . time();
-  $sessionid = md5($randomstring); //sessionid here is just a hash of the username + random number + time and a random salt
-  setcookie("tuneocracy_id", $sessionid);
-}
-?>
-
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Tuneocracy</title>
-
-<script src="jquery-2.1.3.min.js" type="text/javascript"></script>
-
-<script>
-
-(function ( $ ) { 
-    $.fn.bindimages = function() {
-        $(".votebutton").click(function(){
-          $.get("vote.php", {vote: event.target.id})
-            .done(function( data ) {
-              $("#unplayedSongTable")
-              .empty()
-              .append(data)
-              .bindimages();
-            });
-          });
-        return this;
-    };
- 
-}( jQuery ));
-
-
-$(document).ready(function(){
-    setInterval(function() {
-    $.get( "get_latest_data.php")
-            .done(function( data ) {
-                document.getElementById("song_tables").innerHTML = data;
-                $(document).bindimages();
-        });
-    }, 2000);
-});
-</script>
-
-<style>
-.center {
-    text-align: center;
-}
-tr:nth-child(even) {background: #CCC}
-tr:nth-child(odd) {background: #FFF}
-table {
-    border-collapse: collapse;
-    width: 80%;
-}
-
-table, th, td {
-    border: 1px solid black;
-    min-width:100px;
-}
-
-</style>
-
-</head>
-
-<body>
-
-<?php
-//the click binding above goes away after the empty... fix it
 $user = 'root';
 $password = 'root';
 $db = 'testapp';
@@ -98,8 +26,6 @@ $results = mysqli_query($link, $query);
 
 ?>
 
-<!--Replace everything in song_tables div via ajax every 2s-->
-<div id="song_tables">
 Previous Songs:
 <table id="playedSongTable">
 <thead>
@@ -174,6 +100,3 @@ $link->close();
 ?>
 <tbody>
 </table>
-</div>
-</body>
-</html>
