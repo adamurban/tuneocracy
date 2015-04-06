@@ -16,7 +16,7 @@ function create_nix_paths(&$string)
 
 $user = 'root';
 $password = 'root';
-$db = 'testapp';
+$db = 'tuneocracy';
 $host = 'localhost';
 $port = 3306;
 

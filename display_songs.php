@@ -73,7 +73,7 @@ table, th, td {
 //the click binding above goes away after the empty... fix it
 $user = 'root';
 $password = 'root';
-$db = 'testapp';
+$db = 'tuneocracy';
 $host = 'localhost';
 $port = 3306;
 

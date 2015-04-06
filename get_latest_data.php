@@ -1,7 +1,7 @@
 <?php
 $user = 'root';
 $password = 'root';
-$db = 'testapp';
+$db = 'tuneocracy';
 $host = 'localhost';
 $port = 3306;
 
