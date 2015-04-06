@@ -1,4 +1,7 @@
 <?php
+
+exec('osascript iTunesControl/CreatePlaylist.scpt');
+
 $user = 'root';
 $password = 'root';
 $db = 'tuneocracy';
