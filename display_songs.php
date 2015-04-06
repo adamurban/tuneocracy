@@ -3,8 +3,8 @@ $sessionid = htmlspecialchars($_COOKIE['tuneocracy_id']);
 
 if (!$sessionid) {
   //If the user doesn't have a cookie yet, make one for them
-  $randomstring = "tuneocracy" . rand() . time();
-  $sessionid = md5('$randomstring'); //sessionid here is just a hash of the username + random number + time and a random salt
+  $randomstring = rand() . "tuneocracy" . time();
+  $sessionid = md5($randomstring); //sessionid here is just a hash of the username + random number + time and a random salt
   setcookie("tuneocracy_id", $sessionid);
 }
 ?>

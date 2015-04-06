@@ -53,9 +53,9 @@ while(1)
   {
     $song_path = escapeshellarg($song_path);
 
-    echo "<br>Playing " . $song_path;
-    //echo exec('afplay ' . $song_path);
-    echo exec('afplay -t 20 ' . $song_path);
+    echo "\nPlaying " . $song_path;
+    exec('afplay ' . $song_path);
+    //echo exec('afplay -t 20 ' . $song_path);
   }
 
   $link->close();
